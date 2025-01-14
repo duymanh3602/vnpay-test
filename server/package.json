@@ -12,8 +12,18 @@
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.5.2",
     "@cloudflare/workers-types": "^4.20250109.0",
+    "@types/crypto-js": "^4.2.2",
+    "@types/dateformat": "^5.0.3",
+    "@types/node": "^22.10.5",
+    "@types/qs": "^6.9.17",
     "typescript": "^5.5.2",
     "vitest": "2.1.8",
     "wrangler": "^3.60.3"
+  },
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "crypto-js": "^4.2.0",
+    "dateformat": "^5.0.3",
+    "qs": "^6.13.1"
   }
 }
