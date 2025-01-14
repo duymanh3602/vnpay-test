@@ -11,29 +11,31 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-import { IConfiguration } from './helpers/config';
-import { createPaymentUrl } from './utils/vnpay';
+import { swaggerUI } from '@hono/swagger-ui';
+import { csrf, validateRequest } from './middleware';
+import { Context } from './types';
+import authRoutes from './common/auth/routes';
+import vnpRoutes from './common/vnpay/routes';
+import { OpenAPIHono } from '@hono/zod-openapi';
 
-export default {
-	async fetch(request, env, ctx): Promise<Response> {
-		const config: IConfiguration = {
-			tmnCode: env.TMN_CODE,
-			secretKey: env.SECRET_KEY,
-			vnpUrl: env.VNP_URL,
-			returnUrl: env.RETURN_URL,
-		};
+const app = new OpenAPIHono<Context>();
 
-		const url = createPaymentUrl(
-			{
-				ipAddr: request.headers.get('x-forwarded-for') || '127.0.0.1',
-				amount: 100000,
-				orderType: 'billpayment',
-				local: 'vn',
-				bankCode: 'VIETINBANK',
-			},
-			config
-		);
+app.use('*', csrf());
+app.use('*', validateRequest());
 
-		return new Response(url);
+app.get('/', (c) => c.redirect('/ui'));
+
+app.route('/auth', authRoutes);
+app.route('/pay', vnpRoutes);
+
+app.doc('/doc', {
+	openapi: '3.0.0',
+	info: {
+		version: '1.0.0',
+		title: 'Example API',
 	},
-} satisfies ExportedHandler<Env>;
+});
+
+app.get('/ui', swaggerUI({ url: '/doc' }));
+
+export default app;

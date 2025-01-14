@@ -1,5 +1,5 @@
 import dateFormat from 'dateformat';
-import { IConfiguration } from '../helpers/config';
+import { IConfiguration } from '../../helpers/config';
 import querystring from 'qs';
 import CryptoJS from 'crypto-js';
 
@@ -9,6 +9,23 @@ interface ICreatePaymentUrlRequest {
 	orderType: string;
 	local: string;
 	bankCode: string;
+}
+
+interface IVnpParams {
+	vnp_Version: string;
+	vnp_Command: string;
+	vnp_TmnCode: string;
+	vnp_Locale: string;
+	vnp_CurrCode: string;
+	vnp_TxnRef: string;
+	vnp_OrderInfo: string;
+	vnp_OrderType: string;
+	vnp_Amount: number;
+	vnp_ReturnUrl: string;
+	vnp_IpAddr: string;
+	vnp_CreateDate: string;
+	vnp_BankCode?: string;
+	vnp_SecureHash?: string;
 }
 
 export const createPaymentUrl = (request: ICreatePaymentUrlRequest, config: IConfiguration): string => {
@@ -21,22 +38,7 @@ export const createPaymentUrl = (request: ICreatePaymentUrlRequest, config: ICon
 	const orderId = dateFormat(date, 'HHmmss');
 	const amount = request.amount;
 	const currCode = 'VND';
-	let vnpParams: {
-		vnp_Version: string;
-		vnp_Command: string;
-		vnp_TmnCode: string;
-		vnp_Locale: string;
-		vnp_CurrCode: string;
-		vnp_TxnRef: string;
-		vnp_OrderInfo: string;
-		vnp_OrderType: string;
-		vnp_Amount: number;
-		vnp_ReturnUrl: string;
-		vnp_IpAddr: string;
-		vnp_CreateDate: string;
-		vnp_BankCode?: string;
-		vnp_SecureHash?: string;
-	} = {
+	let vnpParams: IVnpParams = {
 		vnp_Version: '2.1.0',
 		vnp_Command: 'other',
 		vnp_TmnCode: tmnCode,
