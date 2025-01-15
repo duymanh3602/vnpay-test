@@ -14,3 +14,14 @@ export const session = sqliteTable('session', {
 		.references(() => user.id),
 	fresh: integer('fresh', { mode: 'boolean' }),
 });
+
+export const transaction = sqliteTable('transaction', {
+	id: text('id').primaryKey(),
+	vnpay_id: text('vnpay_id').notNull().unique(),
+	secure_hash: text('secure_hash').notNull(),
+	amount: integer('amount').notNull(),
+	status: integer('status').notNull().default(0),
+	user_id: text('user_id')
+		.notNull()
+		.references(() => user.id),
+});

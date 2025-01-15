@@ -41,11 +41,14 @@ app.openapi(signup, async (c) => {
 	// Create Session
 	const session = await lucia.createSession(newUser.id, {});
 	const sessionCookie = lucia.createSessionCookie(session.id).serialize();
-	setCookie(c, 'session', sessionCookie, {
-		httpOnly: true,
-		secure: true,
-		path: '/',
-		maxAge: 60 * 60 * 24 * 7,
+	// setCookie(c, 'auth_session', sessionCookie, {
+	// 	httpOnly: true,
+	// 	secure: true,
+	// 	path: '/',
+	// 	maxAge: 60 * 60 * 24 * 7,
+	// });
+	c.header('Set-Cookie', lucia.createSessionCookie(session.id).serialize(), {
+		append: true,
 	});
 
 	return c.redirect('/');
@@ -85,12 +88,15 @@ app.openapi(login, async (c) => {
 	}
 
 	const session = await lucia.createSession(user.id, {});
-	const sessionCookie = lucia.createSessionCookie(session.id).serialize();
-	setCookie(c, 'session', sessionCookie, {
-		httpOnly: true,
-		secure: true,
-		path: '/',
-		maxAge: 60 * 60 * 24 * 7,
+	// const sessionCookie = lucia.createSessionCookie(session.id).serialize();
+	// setCookie(c, 'auth_session', sessionCookie, {
+	// 	httpOnly: true,
+	// 	secure: true,
+	// 	path: '/',
+	// 	maxAge: 60 * 60 * 24 * 7,
+	// });
+	c.header('Set-Cookie', lucia.createSessionCookie(session.id).serialize(), {
+		append: true,
 	});
 
 	return c.redirect('/');
@@ -111,11 +117,14 @@ app.openapi(logout, async (c) => {
 
 	if (session) {
 		const blankSession = lucia.createBlankSessionCookie().serialize();
-		setCookie(c, 'session', blankSession, {
-			httpOnly: true,
-			secure: true,
-			path: '/',
-			maxAge: 60 * 60 * 24 * 7,
+		// setCookie(c, 'auth_session', blankSession, {
+		// 	httpOnly: true,
+		// 	secure: true,
+		// 	path: '/',
+		// 	maxAge: 60 * 60 * 24 * 7,
+		// });
+		c.header('Set-Cookie', blankSession, {
+			append: true,
 		});
 	}
 

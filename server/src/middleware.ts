@@ -39,21 +39,27 @@ export const validateRequest = (): Handler => {
 
 		if (session && session.fresh) {
 			const sessionCookie = lucia.createSessionCookie(session.id).serialize();
-			setCookie(c, 'session', sessionCookie, {
-				httpOnly: true,
-				secure: true,
-				path: '/',
-				maxAge: 60 * 60 * 24 * 7,
+			// setCookie(c, 'auth_session', sessionCookie, {
+			// 	httpOnly: false,
+			// 	secure: false,
+			// 	path: '/',
+			// 	maxAge: 60 * 60 * 24 * 7,
+			// });
+			c.header('Set-Cookie', lucia.createSessionCookie(session.id).serialize(), {
+				append: true,
 			});
 		}
 
 		if (!session) {
 			const sessionCookie = lucia.createBlankSessionCookie().serialize();
-			setCookie(c, 'session', sessionCookie, {
-				httpOnly: true,
-				secure: true,
-				path: '/',
-				maxAge: 60 * 60 * 24 * 7,
+			// setCookie(c, 'auth_session', sessionCookie, {
+			// 	httpOnly: false,
+			// 	secure: false,
+			// 	path: '/',
+			// 	maxAge: 60 * 60 * 24 * 7,
+			// });
+			c.header('Set-Cookie', sessionCookie, {
+				append: true,
 			});
 		}
 
