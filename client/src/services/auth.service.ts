@@ -17,8 +17,7 @@ export const authApi = createApi({
       query: (body: ILoginRequest) => ({
         url: 'auth/login',
         method: 'POST',
-        body: body,
-        credentials: 'include'
+        body: body
       }),
       transformResponse: (result: { data: IAuth }) => result.data,
       async onQueryStarted(args, { dispatch, queryFulfilled }) {

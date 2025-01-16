@@ -4,7 +4,6 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError
 } from '@reduxjs/toolkit/query/react'
-import Cookies from 'js-cookie'
 import { Mutex } from 'async-mutex'
 import { setLogout } from '../store/auth/auth.slice'
 import config from '../config'
@@ -13,16 +12,7 @@ const { ENV_ENDPOINT_API } = import.meta.env
 const mutex = new Mutex()
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: ENV_ENDPOINT_API,
-  prepareHeaders: (headers) => {
-    const token = Cookies.get('token')
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`)
-    }
-
-    return headers
-  },
-  credentials: 'include'
+  baseUrl: ENV_ENDPOINT_API
 })
 
 const customFetchBase: BaseQueryFn<

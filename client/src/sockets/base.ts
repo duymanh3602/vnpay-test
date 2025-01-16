@@ -51,10 +51,7 @@ export class SocketClient implements ISocketClient {
     if (endpoint[0] === '/') endpoint = endpoint.substring(1)
 
     this.socket = io(ENV_ENDPOINT_SOCKET + '/' + endpoint, {
-      withCredentials: true,
-      auth: {
-        token: Cookies.get('token')
-      }
+      withCredentials: true
     })
   }
 

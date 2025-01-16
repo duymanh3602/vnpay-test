@@ -18,7 +18,7 @@ const Login = () => {
   ) => {
     try {
       await login(data).unwrap()
-      navigate('/')
+      navigate('/private')
     } catch (err: any) {
       setServerErrorState(err.data.error.description)
     }
