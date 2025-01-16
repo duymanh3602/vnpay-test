@@ -4,26 +4,23 @@ import Cookies from 'js-cookie'
 import IAuth from '../../models/auth.model'
 
 interface IAuthState {
-  token: string | null
+  isAuthenticated: boolean
 }
 
 const initialState: IAuthState = {
-  token: null
+  isAuthenticated: false
 }
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setLogin: (state, { payload }: PayloadAction<IAuth>) => {
-      state.token = payload.token
-
-      if (payload.token) Cookies.set('token', payload.token)
+    setLogin: (state) => {
+      state.isAuthenticated = true
     },
     setLogout: (state) => {
-      state.token = null
-
-      Cookies.remove('token')
+      // logout
+      state.isAuthenticated = false
     }
   }
 })

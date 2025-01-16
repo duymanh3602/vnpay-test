@@ -17,13 +17,14 @@ export const authApi = createApi({
       query: (body: ILoginRequest) => ({
         url: 'auth/login',
         method: 'POST',
-        body: body
+        body: body,
+        credentials: 'include'
       }),
       transformResponse: (result: { data: IAuth }) => result.data,
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled
-          dispatch(setLogin(data))
+          await queryFulfilled
+          dispatch(setLogin())
           // eslint-disable-next-line no-empty
         } catch (err) {}
       }

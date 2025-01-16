@@ -21,7 +21,8 @@ const baseQuery = fetchBaseQuery({
     }
 
     return headers
-  }
+  },
+  credentials: 'include'
 })
 
 const customFetchBase: BaseQueryFn<
